@@ -1,5 +1,6 @@
 package com.ugesh.qa.controllers
 
+import com.ugesh.qa.dtos.QuestionDto
 import com.ugesh.qa.payloads.QuestionRequestPayload
 import com.ugesh.qa.payloads.QuestionResponsePayload
 import com.ugesh.qa.services.QuestionService
@@ -18,5 +19,15 @@ class QuestionsResource(private val questionService: QuestionService) {
     fun createQuestion(@RequestBody questionRequestPayload: QuestionRequestPayload): ResponseEntity<QuestionResponsePayload> {
         val createdQuestion = questionService.createQuestion(questionRequestPayload = questionRequestPayload)
         return ResponseEntity.status(HttpStatus.CREATED).body(QuestionResponsePayload(questions = listOf(createdQuestion)))
+    }
+
+    @GetMapping
+    fun getQuestions(): ResponseEntity<QuestionResponsePayload> {
+        return ResponseEntity.status(HttpStatus.OK).body(QuestionResponsePayload(questionService.getQuestions()))
+    }
+
+    @GetMapping("/{id}")
+    fun getQuestion(@PathVariable(value = "id") questionId: String): ResponseEntity<QuestionDto> {
+        return ResponseEntity.status(HttpStatus.OK).body(questionService.getQuestion(questionId = questionId))
     }
 }

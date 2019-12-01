@@ -2,6 +2,7 @@ package com.ugesh.qa.services
 
 import com.ugesh.qa.dtos.QuestionDto
 import com.ugesh.qa.exceptions.InvalidParameterException
+import com.ugesh.qa.exceptions.questions.QuestionNotFoundException
 import com.ugesh.qa.models.Question
 import com.ugesh.qa.payloads.QuestionRequestPayload
 import com.ugesh.qa.payloads.QuestionResponsePayload
@@ -21,6 +22,19 @@ class QuestionService(private val questionRepository: QuestionRepository) {
       )
       questionRepository.save(question)
       return QuestionDto.toDto(question = question)
+    }
+
+    fun getQuestions(): List<QuestionDto>  {
+        val questions = questionRepository.findAll()
+        return questions.map { QuestionDto.toDto(it) }
+    }
+
+    fun getQuestion(questionId: String): QuestionDto {
+        val foundQuestion = questionRepository.findByQuestionId(questionId = questionId)
+        return if(foundQuestion.questionId == questionId)
+            QuestionDto.toDto(foundQuestion)
+        else
+            throw QuestionNotFoundException("Question is not available for the given id: $questionId")
     }
 
     private fun checkQuestionTitle(title: String?): String {
