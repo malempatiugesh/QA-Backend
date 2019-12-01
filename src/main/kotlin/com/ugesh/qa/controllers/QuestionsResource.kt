@@ -17,6 +17,6 @@ class QuestionsResource(private val questionService: QuestionService) {
     @PostMapping
     fun createQuestion(@RequestBody questionRequestPayload: QuestionRequestPayload): ResponseEntity<QuestionResponsePayload> {
         val createdQuestion = questionService.createQuestion(questionRequestPayload = questionRequestPayload)
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdQuestion)
+        return ResponseEntity.status(HttpStatus.CREATED).body(QuestionResponsePayload(questions = listOf(createdQuestion)))
     }
 }
