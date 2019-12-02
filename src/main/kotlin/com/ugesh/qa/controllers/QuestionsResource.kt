@@ -30,4 +30,24 @@ class QuestionsResource(private val questionService: QuestionService) {
     fun getQuestion(@PathVariable(value = "id") questionId: String): ResponseEntity<QuestionDto> {
         return ResponseEntity.status(HttpStatus.OK).body(questionService.getQuestion(questionId = questionId))
     }
+
+    @PutMapping("/{id}")
+    fun updateQuestion(
+        @PathVariable(value = "id") questionId: String,
+        @RequestBody questionRequestPayload: QuestionRequestPayload
+    ): ResponseEntity<QuestionDto> {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(questionService.updateQuestion(
+                        questionId = questionId,
+                        questionRequestPayload = questionRequestPayload
+                )
+        )
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteQuestion(@PathVariable("id") questionId: String): ResponseEntity<Any> {
+        questionService.deleteQuestion(questionId = questionId)
+        return ResponseEntity.ok().build()
+    }
 }

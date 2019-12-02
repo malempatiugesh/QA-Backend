@@ -26,15 +26,36 @@ class QuestionService(private val questionRepository: QuestionRepository) {
 
     fun getQuestions(): List<QuestionDto>  {
         val questions = questionRepository.findAll()
-        return questions.map { QuestionDto.toDto(it) }
+        return questions.map { QuestionDto.toDto(question = it) }
     }
 
     fun getQuestion(questionId: String): QuestionDto {
         val foundQuestion = questionRepository.findByQuestionId(questionId = questionId)
-        return if(foundQuestion.questionId == questionId)
-            QuestionDto.toDto(foundQuestion)
-        else
+        if(foundQuestion.questionId != questionId) {
             throw QuestionNotFoundException("Question is not available for the given id: $questionId")
+        }
+        foundQuestion.views++
+        questionRepository.save(foundQuestion)
+        return QuestionDto.toDto(question = foundQuestion)
+    }
+
+    fun updateQuestion(questionId: String, questionRequestPayload: QuestionRequestPayload): QuestionDto {
+        val questionToUpdate = questionRepository.findByQuestionId(questionId = questionId)
+        if (questionToUpdate.questionId != questionId) {
+            throw QuestionNotFoundException("Question is not available for the given id: $questionId")
+        }
+        questionRequestPayload.questionTitle?.let { questionToUpdate.questionTitle = it }
+        questionRequestPayload.questionDescription?.let { questionToUpdate.questionDescription = it }
+        questionRepository.save(questionToUpdate)
+        return QuestionDto.toDto(question = questionToUpdate)
+    }
+
+    fun deleteQuestion(questionId: String) {
+        val questionToRemove = questionRepository.findByQuestionId(questionId = questionId)
+        if (questionToRemove.questionId != questionId) {
+            throw QuestionNotFoundException("Question is not available for the given id: $questionId")
+        }
+        questionRepository.delete(questionToRemove)
     }
 
     private fun checkQuestionTitle(title: String?): String {
