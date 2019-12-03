@@ -1,4 +1,4 @@
-package com.ugesh.qa.payloads
+package com.ugesh.qa.dtos.payloads
 
 data class QuestionRequestPayload(
     val questionTitle: String? = null,

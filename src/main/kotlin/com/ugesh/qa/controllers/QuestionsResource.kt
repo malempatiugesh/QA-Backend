@@ -1,8 +1,8 @@
 package com.ugesh.qa.controllers
 
 import com.ugesh.qa.dtos.QuestionDto
-import com.ugesh.qa.payloads.QuestionRequestPayload
-import com.ugesh.qa.payloads.QuestionResponsePayload
+import com.ugesh.qa.dtos.payloads.QuestionRequestPayload
+import com.ugesh.qa.dtos.payloads.QuestionResponsePayload
 import com.ugesh.qa.services.QuestionService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,9 +21,10 @@ class QuestionsResource(private val questionService: QuestionService) {
         return ResponseEntity.status(HttpStatus.CREATED).body(QuestionResponsePayload(questions = listOf(createdQuestion)))
     }
 
+    //TODO: apply pagination and sorting (recent to old)
     @GetMapping
     fun getQuestions(): ResponseEntity<QuestionResponsePayload> {
-        return ResponseEntity.status(HttpStatus.OK).body(QuestionResponsePayload(questionService.getQuestions()))
+        return ResponseEntity.status(HttpStatus.OK).body(questionService.getQuestions())
     }
 
     @GetMapping("/{id}")
@@ -31,6 +32,7 @@ class QuestionsResource(private val questionService: QuestionService) {
         return ResponseEntity.status(HttpStatus.OK).body(questionService.getQuestion(questionId = questionId))
     }
 
+    //TODO: implement logic to update votes
     @PutMapping("/{id}")
     fun updateQuestion(
         @PathVariable(value = "id") questionId: String,

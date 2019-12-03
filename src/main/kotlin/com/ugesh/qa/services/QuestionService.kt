@@ -4,8 +4,8 @@ import com.ugesh.qa.dtos.QuestionDto
 import com.ugesh.qa.exceptions.InvalidParameterException
 import com.ugesh.qa.exceptions.questions.QuestionNotFoundException
 import com.ugesh.qa.models.Question
-import com.ugesh.qa.payloads.QuestionRequestPayload
-import com.ugesh.qa.payloads.QuestionResponsePayload
+import com.ugesh.qa.dtos.payloads.QuestionRequestPayload
+import com.ugesh.qa.dtos.payloads.QuestionResponsePayload
 import com.ugesh.qa.repositories.QuestionRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -17,16 +17,19 @@ class QuestionService(private val questionRepository: QuestionRepository) {
       val question = Question(
         questionId = UUID.randomUUID().toString().replace("-", ""),
         questionTitle = checkQuestionTitle(title = questionRequestPayload.questionTitle),
-        questionDescription = questionRequestPayload.questionDescription,
+        questionDescription = checkQuestionDescription(questionRequestPayload.questionDescription),
         askedAt = LocalDateTime.now().toString()
       )
       questionRepository.save(question)
       return QuestionDto.toDto(question = question)
     }
 
-    fun getQuestions(): List<QuestionDto>  {
+    fun getQuestions(): QuestionResponsePayload {
         val questions = questionRepository.findAll()
-        return questions.map { QuestionDto.toDto(question = it) }
+        return QuestionResponsePayload(
+                questions = if (questions.isNotEmpty()) questions.map { QuestionDto.toDto(question = it) } else emptyList(),
+                total = questions.size
+        )
     }
 
     fun getQuestion(questionId: String): QuestionDto {
@@ -44,8 +47,12 @@ class QuestionService(private val questionRepository: QuestionRepository) {
         if (questionToUpdate.questionId != questionId) {
             throw QuestionNotFoundException("Question is not available for the given id: $questionId")
         }
-        questionRequestPayload.questionTitle?.let { questionToUpdate.questionTitle = it }
-        questionRequestPayload.questionDescription?.let { questionToUpdate.questionDescription = it }
+        questionRequestPayload.questionTitle?.let {
+            questionToUpdate.questionTitle = checkForEmpty(text = it, type = "title")
+        }
+        questionRequestPayload.questionDescription?.let {
+            questionToUpdate.questionDescription = checkForEmpty(text = it, type = "description")
+        }
         questionRepository.save(questionToUpdate)
         return QuestionDto.toDto(question = questionToUpdate)
     }
@@ -59,6 +66,14 @@ class QuestionService(private val questionRepository: QuestionRepository) {
     }
 
     private fun checkQuestionTitle(title: String?): String {
-        return if (!title.isNullOrBlank()) title else throw InvalidParameterException("Question title should not be null")
+        return if (!title.isNullOrBlank()) title else throw InvalidParameterException("Question title should not be null or empty")
+    }
+
+    private fun checkQuestionDescription(description: String?): String {
+        return if (!description.isNullOrBlank()) description else throw InvalidParameterException("Question description should not be null or empty")
+    }
+
+    private fun checkForEmpty(text: String, type: String): String {
+        return if (text.isNotBlank()) text else throw InvalidParameterException("Question $type should not be empty")
     }
 }
