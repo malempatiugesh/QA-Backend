@@ -1,8 +1,8 @@
 package com.ugesh.qa.controllers
 
 import com.ugesh.qa.dtos.QuestionDto
-import com.ugesh.qa.dtos.payloads.QuestionRequestPayload
-import com.ugesh.qa.dtos.payloads.QuestionResponsePayload
+import com.ugesh.qa.dtos.payloads.questions.QuestionRequestPayload
+import com.ugesh.qa.dtos.payloads.questions.QuestionResponsePayload
 import com.ugesh.qa.services.QuestionService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

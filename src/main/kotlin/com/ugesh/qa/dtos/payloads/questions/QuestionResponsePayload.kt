@@ -1,4 +1,4 @@
-package com.ugesh.qa.dtos.payloads
+package com.ugesh.qa.dtos.payloads.questions
 
 import com.ugesh.qa.dtos.QuestionDto
 

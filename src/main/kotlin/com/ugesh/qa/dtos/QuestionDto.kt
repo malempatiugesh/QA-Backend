@@ -24,7 +24,6 @@ data class QuestionDto(
                         answers = answers
                 )
             }
-
         }
     }
 }

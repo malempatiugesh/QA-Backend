@@ -4,8 +4,8 @@ import com.ugesh.qa.dtos.QuestionDto
 import com.ugesh.qa.exceptions.InvalidParameterException
 import com.ugesh.qa.exceptions.questions.QuestionNotFoundException
 import com.ugesh.qa.models.Question
-import com.ugesh.qa.dtos.payloads.QuestionRequestPayload
-import com.ugesh.qa.dtos.payloads.QuestionResponsePayload
+import com.ugesh.qa.dtos.payloads.questions.QuestionRequestPayload
+import com.ugesh.qa.dtos.payloads.questions.QuestionResponsePayload
 import com.ugesh.qa.repositories.QuestionRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime

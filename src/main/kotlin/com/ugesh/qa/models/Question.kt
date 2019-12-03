@@ -34,9 +34,10 @@ data class Question(
         @NotBlank
         var votes: Int = 0,
 
+        // mappedBy referes to the question property in the Answer entity class
+        //@OneToMany(mappedBy = "question", cascade = [CascadeType.ALL])
         @NotBlank
         var answers: Int = 0
-
 ): Serializable {
     companion object{
         const val TABLE_NAME = "questions"
