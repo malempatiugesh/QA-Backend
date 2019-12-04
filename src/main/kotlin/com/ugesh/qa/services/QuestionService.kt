@@ -10,9 +10,13 @@ import com.ugesh.qa.repositories.QuestionRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
+import javax.transaction.Transactional
 
 @Service
-class QuestionService(private val questionRepository: QuestionRepository) {
+class QuestionService(
+        private val questionRepository: QuestionRepository,
+        private val answerService: AnswerService
+) {
     fun createQuestion(questionRequestPayload: QuestionRequestPayload): QuestionDto {
       val question = Question(
         questionId = UUID.randomUUID().toString().replace("-", ""),
@@ -39,7 +43,10 @@ class QuestionService(private val questionRepository: QuestionRepository) {
         }
         foundQuestion.views++
         questionRepository.save(foundQuestion)
-        return QuestionDto.toDto(question = foundQuestion)
+        return QuestionDto.toDto(
+                question = foundQuestion,
+                answersToQuestion = answerService.getAnswersByQuestionId(questionId = foundQuestion.id)
+        )
     }
 
     fun updateQuestion(questionId: String, questionRequestPayload: QuestionRequestPayload): QuestionDto {
@@ -57,11 +64,13 @@ class QuestionService(private val questionRepository: QuestionRepository) {
         return QuestionDto.toDto(question = questionToUpdate)
     }
 
+    @Transactional
     fun deleteQuestion(questionId: String) {
         val questionToRemove = questionRepository.findByQuestionId(questionId = questionId)
         if (questionToRemove.questionId != questionId) {
             throw QuestionNotFoundException("Question is not available for the given id: $questionId")
         }
+        answerService.deleteAnswersByQuestionId(questionId = questionToRemove.id)
         questionRepository.delete(questionToRemove)
     }
 

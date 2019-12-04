@@ -1,7 +1,7 @@
 package com.ugesh.qa.controllers
 
 import com.ugesh.qa.dtos.AnswerDto
-import com.ugesh.qa.dtos.payloads.answers.AnswerPayload
+import com.ugesh.qa.dtos.payloads.answers.AnswerRequestPayload
 import com.ugesh.qa.services.AnswerService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,9 +15,9 @@ class AnswersResource(private val answerService: AnswerService) {
     @PostMapping("/api/questions/{questionId}/answers")
     fun createAnswer(
         @PathVariable(value = "questionId") questionId: String,
-        @RequestBody answer: AnswerPayload
+        @RequestBody answerRequest: AnswerRequestPayload
     ): ResponseEntity<AnswerDto> {
-        val createdAnswer = answerService.createAnswer(questionId = questionId, answerPayload = answer)
+        val createdAnswer = answerService.createAnswer(questionId = questionId, answerRequestPayload = answerRequest)
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAnswer)
     }
 }

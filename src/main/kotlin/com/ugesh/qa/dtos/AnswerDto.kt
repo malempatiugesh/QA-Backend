@@ -5,7 +5,7 @@ import com.ugesh.qa.models.Answer
 data class AnswerDto(
     var answerId: String? = null,
     var answer: String? = null,
-    var question: QuestionDto? = null
+    var questionId: String? = null
 ) {
   companion object {
       fun toDto(answerData: Answer): AnswerDto {
@@ -13,7 +13,7 @@ data class AnswerDto(
               AnswerDto(
                   answerId = answerId,
                   answer = answer,
-                  question = QuestionDto.toDto(question = question)
+                  questionId = question.questionId
               )
           }
       }

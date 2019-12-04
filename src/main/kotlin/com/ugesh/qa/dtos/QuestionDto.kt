@@ -1,5 +1,6 @@
 package com.ugesh.qa.dtos
 
+import com.ugesh.qa.models.Answer
 import com.ugesh.qa.models.Question
 
 data class QuestionDto(
@@ -9,10 +10,11 @@ data class QuestionDto(
         var askedAt: String? = null,
         var views: Int = 0,
         var votes: Int = 0,
-        var answers: Int = 0
+        var answers: List<AnswerDto> = emptyList(),
+        var totalAnswers: Int = 0
 ) {
     companion object {
-        fun toDto(question: Question): QuestionDto {
+        fun toDto(question: Question, answersToQuestion: List<AnswerDto> = emptyList()): QuestionDto {
             return with(question) {
                 QuestionDto(
                         questionId = questionId,
@@ -21,7 +23,8 @@ data class QuestionDto(
                         askedAt = askedAt,
                         views = views,
                         votes = votes,
-                        answers = answers
+                        answers = answersToQuestion,
+                        totalAnswers = answers
                 )
             }
         }
