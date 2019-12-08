@@ -61,7 +61,10 @@ class QuestionService(
             questionToUpdate.questionDescription = checkForEmpty(text = it, type = "description")
         }
         questionRepository.save(questionToUpdate)
-        return QuestionDto.toDto(question = questionToUpdate)
+        return QuestionDto.toDto(
+                question = questionToUpdate,
+                answersToQuestion = answerService.getAnswersByQuestionId(questionId = questionToUpdate.id)
+        )
     }
 
     @Transactional

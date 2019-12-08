@@ -9,6 +9,7 @@ import com.ugesh.qa.models.Question
 import com.ugesh.qa.repositories.AnswerRepository
 import com.ugesh.qa.repositories.QuestionRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.*
 
 @Service
@@ -20,6 +21,7 @@ class AnswerService(
         val answer = Answer(
             answerId = UUID.randomUUID().toString().replace("-", ""),
             answer = checkAnswer(answer = answerRequestPayload.answer),
+            answeredAt = LocalDateTime.now().toString(),
             question = setQuestion(questionId = questionId)
         )
         answerRepository.save(answer)

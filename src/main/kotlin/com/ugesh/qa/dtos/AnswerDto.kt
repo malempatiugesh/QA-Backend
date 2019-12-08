@@ -5,6 +5,8 @@ import com.ugesh.qa.models.Answer
 data class AnswerDto(
     var answerId: String? = null,
     var answer: String? = null,
+    var answeredAt: String? = null,
+    var votes: Int? = null,
     var questionId: String? = null
 ) {
   companion object {
@@ -13,6 +15,8 @@ data class AnswerDto(
               AnswerDto(
                   answerId = answerId,
                   answer = answer,
+                  answeredAt = answeredAt,
+                  votes = votes,
                   questionId = question.questionId
               )
           }

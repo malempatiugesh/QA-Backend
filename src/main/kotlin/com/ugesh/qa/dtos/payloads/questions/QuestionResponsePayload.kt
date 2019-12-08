@@ -4,6 +4,6 @@ import com.ugesh.qa.dtos.QuestionDto
 
 
 data class QuestionResponsePayload(
-        val questions: List<QuestionDto> = emptyList(),
-        val total: Int = 0
+    val total: Int = 0,
+    val questions: List<QuestionDto> = emptyList()
 )

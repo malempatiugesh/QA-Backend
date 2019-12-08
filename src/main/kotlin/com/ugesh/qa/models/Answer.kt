@@ -20,6 +20,14 @@ class Answer(
     @Column(name = "answer", length = 10000)
     var answer: String,
 
+    @NotBlank
+    @Column(name="answered_at")
+    var answeredAt: String,
+
+    @NotBlank
+    @Column(name = "votes")
+    var votes: Int = 0,
+
     @ManyToOne
     @JoinColumn(name = "question_id")
     var question: Question

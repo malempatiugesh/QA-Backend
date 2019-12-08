@@ -1,6 +1,5 @@
 package com.ugesh.qa.dtos
 
-import com.ugesh.qa.models.Answer
 import com.ugesh.qa.models.Question
 
 data class QuestionDto(
