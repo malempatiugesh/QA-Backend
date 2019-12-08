@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface AnswerRepository : JpaRepository<Answer, Long> {
+    fun findByAnswerId(answerId: String): Answer
     fun findByQuestionId(questionId: Long?): List<Answer>
     fun deleteByQuestionId(questionId: Long?)
 }

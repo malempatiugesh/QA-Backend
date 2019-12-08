@@ -28,7 +28,7 @@ class Answer(
     @Column(name = "votes")
     var votes: Int = 0,
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH])
     @JoinColumn(name = "question_id")
     var question: Question
 

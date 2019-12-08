@@ -3,7 +3,8 @@ package com.ugesh.qa.services
 import com.ugesh.qa.dtos.AnswerDto
 import com.ugesh.qa.dtos.payloads.answers.AnswerRequestPayload
 import com.ugesh.qa.exceptions.InvalidParameterException
-import com.ugesh.qa.exceptions.questions.QuestionNotFoundException
+import com.ugesh.qa.exceptions.notfound.AnswerNotFoundException
+import com.ugesh.qa.exceptions.notfound.QuestionNotFoundException
 import com.ugesh.qa.models.Answer
 import com.ugesh.qa.models.Question
 import com.ugesh.qa.repositories.AnswerRepository
@@ -34,6 +35,25 @@ class AnswerService(
 
     fun deleteAnswersByQuestionId(questionId: Long?) {
         answerRepository.deleteByQuestionId(questionId = questionId)
+    }
+
+    fun updateAnswer(answerId: String, answerRequestPayload: AnswerRequestPayload): AnswerDto {
+        val answerToUpdate = answerRepository.findByAnswerId(answerId = answerId)
+        if(answerToUpdate.answerId != answerId) {
+            throw AnswerNotFoundException("Answer is not available for the given id: $answerId")
+        }
+        answerToUpdate.answer = checkAnswer(answerRequestPayload.answer)
+        answerRepository.save(answerToUpdate)
+        return AnswerDto.toDto(answerData = answerToUpdate)
+    }
+
+    fun deleteAnswer(answerId: String) {
+        val answerToDelete = answerRepository.findByAnswerId(answerId = answerId)
+        if(answerToDelete.answerId != answerId) throw AnswerNotFoundException("Answer is not available for the given id: $answerId")
+        if (answerToDelete.question.answers > 0) {
+            answerToDelete.question.answers--
+        }
+        answerRepository.delete(answerToDelete)
     }
 
     private fun setQuestion(questionId: String): Question {

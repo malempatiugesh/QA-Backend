@@ -2,7 +2,7 @@ package com.ugesh.qa.services
 
 import com.ugesh.qa.dtos.QuestionDto
 import com.ugesh.qa.exceptions.InvalidParameterException
-import com.ugesh.qa.exceptions.questions.QuestionNotFoundException
+import com.ugesh.qa.exceptions.notfound.QuestionNotFoundException
 import com.ugesh.qa.models.Question
 import com.ugesh.qa.dtos.payloads.questions.QuestionRequestPayload
 import com.ugesh.qa.dtos.payloads.questions.QuestionResponsePayload
