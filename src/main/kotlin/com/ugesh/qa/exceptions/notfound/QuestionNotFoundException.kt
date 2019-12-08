@@ -1,4 +1,4 @@
-package com.ugesh.qa.exceptions.questions
+package com.ugesh.qa.exceptions.notfound
 
 import java.lang.Exception
 

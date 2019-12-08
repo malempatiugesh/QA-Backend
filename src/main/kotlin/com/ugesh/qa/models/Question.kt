@@ -19,9 +19,10 @@ data class Question(
         @Column(name = "question_title")
         var questionTitle: String,
 
+        @NotBlank
         @Lob
         @Column(name = "question_description", length=10000)
-        var questionDescription: String? = null,
+        var questionDescription: String,
 
         @NotBlank
         @Column(name = "asked_at")
@@ -35,7 +36,6 @@ data class Question(
 
         @NotBlank
         var answers: Int = 0
-
 ): Serializable {
     companion object{
         const val TABLE_NAME = "questions"
