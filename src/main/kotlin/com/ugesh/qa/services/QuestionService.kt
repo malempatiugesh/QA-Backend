@@ -24,8 +24,7 @@ class QuestionService(
         questionDescription = checkQuestionDescription(questionRequestPayload.questionDescription),
         askedAt = LocalDateTime.now().toString()
       )
-      questionRepository.save(question)
-      return QuestionDto.toDto(question = question)
+      return QuestionDto.toDto(question = questionRepository.save(question))
     }
 
     fun getQuestions(): QuestionResponsePayload {
