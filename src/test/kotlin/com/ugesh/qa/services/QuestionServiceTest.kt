@@ -144,7 +144,7 @@ class QuestionServiceTest {
 
     private fun createQuestion(): QuestionDto {
         val question = questions()[0]
-        every { questionRepository.save<Question>(any())} returns questions()[0]
+        every { questionRepository.save<Question>(any())} returns question
         return questionService.createQuestion(questionRequestPayload = QuestionRequestPayload(
             questionTitle = question.questionTitle,
             questionDescription = question.questionDescription
